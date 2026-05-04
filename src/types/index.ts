@@ -19,6 +19,7 @@ export interface Chapter {
   title: string;
   content: string;
   chapter_number: number;
+  link_url?: string;
   views: number;
   created_at: string;
 }

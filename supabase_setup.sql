@@ -1,4 +1,10 @@
--- 1. Bảng Admin đơn giản (Dành cho người quản trị)
+-- 1. Xóa các bảng cũ nếu có để làm sạch (Cẩn thận: Lệnh này xóa dữ liệu cũ)
+-- DROP TABLE IF EXISTS comments;
+-- DROP TABLE IF EXISTS chapters;
+-- DROP TABLE IF EXISTS stories;
+-- DROP TABLE IF EXISTS admin_users;
+
+-- 2. Tạo bảng Admin đơn giản
 CREATE TABLE IF NOT EXISTS admin_users (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   username TEXT UNIQUE NOT NULL,
@@ -8,12 +14,14 @@ CREATE TABLE IF NOT EXISTS admin_users (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
 );
 
--- Thêm tài khoản admin mẫu: admin / admin123
+-- 3. Tạo tài khoản admin mặc định (Nếu chưa có)
+-- Username: admin
+-- Password: admin123
 INSERT INTO admin_users (username, password, full_name) 
 VALUES ('admin', 'admin123', 'Quản trị viên')
-ON CONFLICT (username) DO NOTHING;
+ON CONFLICT (username) DO UPDATE SET password = 'admin123';
 
--- 2. Bảng Truyện (Stories)
+-- 4. Bảng Truyện (Stories)
 CREATE TABLE IF NOT EXISTS stories (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   author_id UUID REFERENCES admin_users(id) ON DELETE SET NULL,
@@ -28,19 +36,20 @@ CREATE TABLE IF NOT EXISTS stories (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
 );
 
--- 3. Bảng Chương truyện (Chapters)
+-- 5. Bảng Chương truyện (Chapters)
 CREATE TABLE IF NOT EXISTS chapters (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   story_id UUID REFERENCES stories(id) ON DELETE CASCADE NOT NULL,
   chapter_number INTEGER NOT NULL,
   title TEXT NOT NULL,
   content TEXT NOT NULL,
+  link_url TEXT, -- Thêm trường để gắn link vào bất kỳ chương nào
   views INTEGER DEFAULT 0,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
   UNIQUE(story_id, chapter_number)
 );
 
--- 4. Bảng Bình luận (Đơn giản cho người đọc)
+-- 6. Bảng Bình luận (Comments)
 CREATE TABLE IF NOT EXISTS comments (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   author_name TEXT DEFAULT 'Ẩn danh',
@@ -50,7 +59,7 @@ CREATE TABLE IF NOT EXISTS comments (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
 );
 
--- 5. RPC Function để tăng lượt xem
+-- 7. RPC Function để tăng lượt xem
 CREATE OR REPLACE FUNCTION increment_views(story_id UUID)
 RETURNS void AS $$
 BEGIN
@@ -60,8 +69,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- 6. Tắt RLS để đơn giản hóa việc quản lý (Vì bạn yêu cầu không phức tạp)
--- Lưu ý: Trong môi trường thực tế nên bật RLS và cấu hình bảo mật hơn.
+-- 8. Tắt RLS để người đọc xem được truyện mà k cần login
 ALTER TABLE admin_users DISABLE ROW LEVEL SECURITY;
 ALTER TABLE stories DISABLE ROW LEVEL SECURITY;
 ALTER TABLE chapters DISABLE ROW LEVEL SECURITY;

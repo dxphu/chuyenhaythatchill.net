@@ -28,17 +28,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLoading(false);
   }, []);
 
-  const signIn = async (username: string, password: string) => {
+  const signIn = async (usernameInput: string, passwordInput: string) => {
+    const username = usernameInput.trim();
+    const password = passwordInput.trim();
+
     try {
+      console.log('Đang thử đăng nhập với:', username);
       const { data, error } = await supabase
         .from('admin_users')
         .select('*')
         .eq('username', username)
-        .eq('password', password) // So sánh text thuần như yêu cầu
+        .eq('password', password)
         .single();
 
-      if (error || !data) {
-        return { error: 'Tên đăng nhập hoặc mật khẩu không đúng' };
+      if (error) {
+        console.error('Lỗi khi truy vấn Supabase:', error);
+        if (error.code === 'PGRST116') {
+          return { error: 'Tên đăng nhập hoặc mật khẩu không chính xác (Không tìm thấy record)' };
+        }
+        return { error: `Lỗi kết nối database: ${error.message}` };
+      }
+
+      if (!data) {
+        return { error: 'Dữ liệu trả về trống' };
       }
 
       const adminProfile: UserProfile = {
@@ -52,7 +64,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.setItem('site_admin_session', JSON.stringify(adminProfile));
       return { error: null };
     } catch (err: any) {
-      return { error: err.message || 'Lỗi hệ thống' };
+      console.error('Lỗi hệ thống khi login:', err);
+      return { error: 'Lỗi hệ thống: ' + (err.message || 'Không xác định') };
     }
   };
 

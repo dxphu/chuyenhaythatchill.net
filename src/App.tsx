@@ -6,14 +6,16 @@ import { Home } from './pages/Home';
 import { StoryDetail } from './pages/StoryDetail';
 import { Reader } from './pages/Reader';
 import { WriterDashboard } from './pages/WriterDashboard';
+import { EditStory } from './pages/Writer/EditStory';
+import { ManageChapters } from './pages/Writer/ManageChapters';
 import { Login } from './pages/Login';
 
 const ProtectedRoute = ({ children, role }: { children: React.ReactNode; role?: string }) => {
-  const { user, profile, loading } = useAuth();
+  const { profile, loading } = useAuth();
 
   if (loading) return <div>Loading...</div>;
-  if (!user) return <Navigate to="/login" />;
-  if (role && profile?.role !== role) return <Navigate to="/" />;
+  if (!profile) return <Navigate to="/login" />;
+  if (role && profile?.role !== role && profile?.role !== 'admin') return <Navigate to="/" />;
 
   return <>{children}</>;
 };
@@ -32,10 +34,34 @@ function App() {
 
           {/* Protected Writer Routes */}
           <Route 
-            path="/writer/*" 
+            path="/writer" 
             element={
               <ProtectedRoute role="writer">
                 <MainLayout><WriterDashboard /></MainLayout>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/writer/new-story" 
+            element={
+              <ProtectedRoute role="writer">
+                <MainLayout><EditStory /></MainLayout>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/writer/edit-story/:id" 
+            element={
+              <ProtectedRoute role="writer">
+                <MainLayout><EditStory /></MainLayout>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/writer/manage-chapters/:storyId" 
+            element={
+              <ProtectedRoute role="writer">
+                <MainLayout><ManageChapters /></MainLayout>
               </ProtectedRoute>
             } 
           />
