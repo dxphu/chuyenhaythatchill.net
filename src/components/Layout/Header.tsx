@@ -1,10 +1,10 @@
 import React from 'react';
-import { Search, Bell, Settings, HelpCircle, Grid, MoreHorizontal, User } from 'lucide-react';
+import { Search, Bell, Settings, HelpCircle, Grid, MoreHorizontal, User, PenTool, LogOut } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 
 export const Header: React.FC = () => {
-  const { profile } = useAuth();
+  const { profile, signOut } = useAuth();
 
   return (
     <header className="fixed top-0 left-0 right-0 h-[48px] bg-white border-b border-border-neutral-light flex items-center justify-between px-4 z-50">
@@ -30,31 +30,65 @@ export const Header: React.FC = () => {
       </div>
 
       <div className="flex items-center gap-2">
-        <button className="p-2 text-text-secondary hover:text-brand transition-colors rounded-misa">
-          <Search className="md:hidden" size={20} />
+        <button className="p-2 text-text-secondary hover:text-brand transition-colors rounded-misa md:hidden">
+          <Search size={20} />
         </button>
-        <button className="p-2 text-text-secondary hover:text-brand transition-colors rounded-misa">
+        <button className="p-2 text-text-secondary hover:text-brand transition-colors rounded-misa hidden sm:block">
           <Bell size={20} />
         </button>
-        <button className="p-2 text-text-secondary hover:text-brand transition-colors rounded-misa">
-          <HelpCircle size={20} />
-        </button>
-        <button className="p-2 text-text-secondary hover:text-brand transition-colors rounded-misa">
-          <Settings size={20} />
-        </button>
-        <button className="p-2 text-text-secondary hover:text-brand transition-colors rounded-misa">
-          <MoreHorizontal size={20} />
-        </button>
         
-        <div className="ml-2 w-8 h-8 rounded-full bg-border-neutral overflow-hidden cursor-pointer hover:ring-2 ring-brand transition-all">
-          {profile?.avatar_url ? (
-            <img src={profile.avatar_url} alt="User" className="w-full h-full object-cover" />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-white bg-text-hint">
-              <User size={18} />
+        {profile ? (
+          <div className="flex items-center gap-3">
+            {profile.role === 'writer' && (
+              <Link 
+                to="/writer/dashboard" 
+                className="hidden lg:flex items-center gap-2 px-3 py-1.5 bg-brand text-white rounded-misa font-semibold hover:opacity-90 transition-all"
+              >
+                <PenTool size={16} />
+                <span>Viết truyện</span>
+              </Link>
+            )}
+            
+            <div className="relative group ml-2">
+              <div className="w-8 h-8 rounded-full bg-border-neutral overflow-hidden cursor-pointer hover:ring-2 ring-brand transition-all">
+                {profile.avatar_url ? (
+                  <img src={profile.avatar_url} alt="User" className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-white bg-brand/80">
+                    <User size={18} />
+                  </div>
+                )}
+              </div>
+              
+              {/* Simple Dropdown on Hover */}
+              <div className="absolute right-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                <div className="w-48 bg-white border border-border-neutral-light rounded-misa shadow-lg py-1 overflow-hidden">
+                  <div className="px-4 py-2 border-b border-border-neutral-light">
+                    <p className="font-bold text-text-primary truncate">{profile.full_name || 'Người dùng'}</p>
+                    <p className="text-[11px] text-text-hint truncate">{profile.email}</p>
+                  </div>
+                  {profile.role === 'writer' && (
+                    <Link to="/writer/dashboard" className="flex items-center gap-2 px-4 py-2 hover:bg-brand-light text-text-primary transition-colors">
+                      <Grid size={16} />
+                      <span>Quản lý truyện</span>
+                    </Link>
+                  )}
+                  <button 
+                    onClick={() => signOut()}
+                    className="w-full flex items-center gap-2 px-4 py-2 hover:bg-danger/10 text-danger transition-colors"
+                  >
+                    <LogOut size={16} />
+                    <span>Đăng xuất</span>
+                  </button>
+                </div>
+              </div>
             </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <Link to="/login" className="misa-btn-primary h-8 px-4 text-[13px]">
+            Đăng nhập
+          </Link>
+        )}
       </div>
     </header>
   );
