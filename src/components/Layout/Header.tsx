@@ -85,9 +85,9 @@ export const Header: React.FC = () => {
             </div>
           </div>
         ) : (
-          <Link to="/login" className="misa-btn-primary h-8 px-4 text-[13px]">
-            Đăng nhập
-          </Link>
+          <div className="text-[12px] text-text-hint italic">
+            Chế độ người đọc
+          </div>
         )}
       </div>
     </header>
