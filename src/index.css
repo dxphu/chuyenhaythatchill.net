@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-brand: #0E9A62;
+  --color-brand-light: #EDFCF4;
+  --color-border-neutral: #D5D7DA;
+  --color-border-neutral-light: #E9EAEB;
+  --color-icon-neutral: #717680;
+  --color-text-primary: #101828;
+  --color-text-secondary: #717680;
+  --color-text-hint: #A4A7AE;
+  --color-background-app: #F0F2F4;
+  
+  --color-info: #1570EF;
+  --color-warning: #F79009;
+  --color-danger: #F04438;
+  --color-success: #12B76A;
+  --color-link: #245FDF;
+
+  --radius-misa: 8px;
+  --radius-misa-lg: 12px;
+}
+
+@layer base {
+  body {
+    @apply font-sans text-text-primary bg-background-app text-[13px];
+  }
+  
+  h2 {
+    @apply text-[20px] font-semibold;
+  }
+  
+  h3 {
+    @apply text-[16px] font-semibold;
+  }
+}
+
+@layer components {
+  .misa-card {
+    @apply bg-white rounded-misa-lg shadow-[0_4px_16px_0_rgba(0,0,0,0.04)];
+  }
+
+  .misa-input {
+    @apply h-[32px] px-3 border border-border-neutral rounded-misa outline-none focus:border-brand transition-colors;
+  }
+
+  .misa-btn-primary {
+    @apply h-[32px] min-w-[84px] px-3 bg-brand text-white rounded-misa font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2;
+  }
+
+  .misa-btn-secondary {
+    @apply h-[32px] min-w-[84px] px-3 bg-white border border-border-neutral text-text-primary rounded-misa font-medium hover:bg-brand-light transition-colors flex items-center justify-center gap-2;
+  }
+
+  .misa-btn-ai-filled {
+    @apply h-[32px] min-w-[84px] px-3 bg-[linear-gradient(98deg,#1482FF_8.87%,#CF11FF_100%)] text-white rounded-misa font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2;
+  }
+}
