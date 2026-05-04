@@ -1,27 +1,25 @@
 import React, { useState } from 'react';
-import { supabase } from '../lib/supabase';
-import { Mail, Lock, LogIn, Github, ArrowRight } from 'lucide-react';
+import { Mail, Lock, LogIn, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 export const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { signIn } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    const result = await signIn(username, password);
 
-    if (error) {
-      setError(error.message);
+    if (result.error) {
+      setError(result.error);
     } else {
       navigate('/');
     }
@@ -36,7 +34,7 @@ export const Login: React.FC = () => {
              <LogIn size={32} />
           </div>
           <h1 className="text-2xl font-bold">Chào mừng trở lại</h1>
-          <p className="text-text-secondary">Vui lòng nhập thông tin tài khoản của bạn để truy cập.</p>
+          <p className="text-text-secondary">Hệ thống dành cho quản trị viên.</p>
         </div>
 
         {error && (
@@ -47,14 +45,14 @@ export const Login: React.FC = () => {
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div className="space-y-2">
-            <label className="text-[13px] font-semibold text-text-secondary">Email Admin</label>
+            <label className="text-[13px] font-semibold text-text-secondary">Tên đăng nhập</label>
             <div className="relative group">
-               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-text-hint group-focus-within:text-brand transition-colors" size={16} />
+               <User className="absolute left-3 top-1/2 -translate-y-1/2 text-text-hint group-focus-within:text-brand transition-colors" size={16} />
                <input 
-                  type="email" 
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@example.com"
+                  type="text" 
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="admin"
                   className="misa-input w-full pl-10 h-11"
                   required
                />
@@ -86,7 +84,7 @@ export const Login: React.FC = () => {
         </form>
 
         <p className="text-center text-[12px] text-text-hint pt-4">
-          Hệ thống dành riêng cho quản trị viên website.
+          Nếu bạn chưa có tài khoản, vui lòng liên hệ kỹ thuật viên.
         </p>
       </div>
     </div>

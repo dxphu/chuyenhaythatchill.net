@@ -65,7 +65,7 @@ export const Header: React.FC = () => {
                 <div className="w-48 bg-white border border-border-neutral-light rounded-misa shadow-lg py-1 overflow-hidden">
                   <div className="px-4 py-2 border-b border-border-neutral-light">
                     <p className="font-bold text-text-primary truncate">{profile.full_name || 'Người dùng'}</p>
-                    <p className="text-[11px] text-text-hint truncate">{profile.email}</p>
+                    <p className="text-[11px] text-text-hint truncate">{profile.username}</p>
                   </div>
                   {profile.role === 'writer' && (
                     <Link to="/writer/dashboard" className="flex items-center gap-2 px-4 py-2 hover:bg-brand-light text-text-primary transition-colors">

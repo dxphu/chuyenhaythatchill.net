@@ -36,8 +36,8 @@ export interface Comment {
 
 export interface UserProfile {
   id: string;
-  email: string;
+  username: string;
   full_name: string;
-  role: 'reader' | 'writer' | 'admin';
+  role: 'writer' | 'admin';
   avatar_url?: string;
 }
