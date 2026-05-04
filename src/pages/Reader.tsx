@@ -121,47 +121,47 @@ export const Reader: React.FC = () => {
       </header>
 
       {/* Reader Content */}
-      <main className="pt-20 pb-20 max-w-2xl mx-auto px-4">
+      <main className="pt-20 pb-24 max-w-2xl mx-auto px-5 md:px-0">
         <motion.div
            initial={{ opacity: 0 }}
            animate={{ opacity: 1 }}
            className="prose prose-lg prose-slate max-w-none"
         >
-          <h1 className="text-3xl font-bold mb-10 text-center">{chapter?.title}</h1>
-          <div className="text-[18px] leading-[1.8] text-text-primary space-y-6 font-serif">
+          <h1 className="text-2xl md:text-3xl font-bold mb-8 text-center leading-tight">{chapter?.title}</h1>
+          <div className="text-[17px] md:text-[19px] leading-[1.8] text-text-primary space-y-7 font-serif text-justify md:text-left">
             {chapter?.content.split('\n').map((p, i) => (
-              <p key={i}>{p}</p>
+              <p key={i} className="mb-4">{p}</p>
             ))}
           </div>
         </motion.div>
 
         {/* Interaction Bar */}
-        <div className="mt-16 flex flex-col sm:flex-row items-center justify-between border-t border-border-neutral-light pt-6 gap-6">
-           <div className="flex items-center gap-6">
-              <button className="flex items-center gap-2 text-text-secondary hover:text-brand group">
-                <ThumbsUp size={18} className="group-hover:scale-110 transition-transform" />
-                <span>124</span>
+        <div className="mt-16 flex flex-col sm:flex-row items-center justify-between border-t border-border-neutral-light pt-8 gap-8">
+           <div className="flex items-center gap-8">
+              <button className="flex items-center gap-2 text-text-secondary hover:text-brand transition-colors p-2">
+                <ThumbsUp size={22} />
+                <span className="font-medium">Thích (124)</span>
               </button>
-              <button className="flex items-center gap-2 text-text-secondary hover:text-brand group">
-                <MessageSquare size={18} className="group-hover:scale-110 transition-transform" />
-                <span>45</span>
+              <button className="flex items-center gap-2 text-text-secondary hover:text-brand transition-colors p-2">
+                <MessageSquare size={22} />
+                <span className="font-medium">45</span>
               </button>
            </div>
            
-           <div className="flex items-center gap-4">
+           <div className="flex items-center gap-3 w-full sm:w-auto">
              <button 
                 onClick={() => navigate(`/story/${storyId}/chapter/${prevChapter?.id}`)}
                 disabled={!prevChapter}
-                className="misa-btn-secondary disabled:opacity-50 flex items-center gap-2"
+                className="flex-1 sm:flex-none misa-btn-secondary h-12 md:h-10 px-4 disabled:opacity-50 flex items-center justify-center gap-2 font-bold"
              >
-               <ChevronLeft size={16} /> Chương trước
+               <ChevronLeft size={18} /> Trước
              </button>
              <button 
                 onClick={() => navigate(`/story/${storyId}/chapter/${nextChapter?.id}`)}
                 disabled={!nextChapter}
-                className="misa-btn-primary disabled:opacity-50 flex items-center gap-2"
+                className="flex-1 sm:flex-none misa-btn-primary h-12 md:h-10 px-4 disabled:opacity-50 flex items-center justify-center gap-2 font-bold"
              >
-               Chương sau <ChevronRight size={16} />
+               Sau <ChevronRight size={18} />
              </button>
            </div>
         </div>

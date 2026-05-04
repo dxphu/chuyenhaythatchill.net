@@ -117,9 +117,11 @@ export const StoryDetail: React.FC = () => {
              </div>
 
              <div className="flex flex-wrap gap-3">
-                <Link to={`/story/${id}/chapter/1`} className="misa-btn-primary flex-1 min-w-[140px] h-11 text-base">
-                  <BookOpen size={18} /> Đọc ngay
-                </Link>
+                {chapters.length > 0 && (
+                  <Link to={`/story/${id}/chapter/${chapters[0].id}`} className="misa-btn-primary flex-1 min-w-[140px] h-11 text-base">
+                    <BookOpen size={18} /> Đọc ngay
+                  </Link>
+                )}
                 <button className="misa-btn-secondary flex-1 min-w-[140px] h-11 text-base">
                   <BookmarkPlus size={18} /> Theo dõi
                 </button>
@@ -179,7 +181,7 @@ export const StoryDetail: React.FC = () => {
                    {chapters.map((chapter) => (
                       <Link 
                         key={chapter.id} 
-                        to={`/story/${id}/chapter/${chapter.chapter_number}`}
+                        to={`/story/${id}/chapter/${chapter.id}`}
                         className="flex items-center justify-between py-3 hover:bg-brand-light px-2 rounded-misa transition-colors group"
                       >
                          <div className="flex items-center gap-3">

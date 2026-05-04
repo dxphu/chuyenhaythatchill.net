@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { MainLayout } from './components/Layout/MainLayout';
 import { Home } from './pages/Home';
+import { Search } from './pages/Search';
+import { Library } from './pages/Library';
+import { Profile } from './pages/Profile';
 import { StoryDetail } from './pages/StoryDetail';
 import { Reader } from './pages/Reader';
 import { WriterDashboard } from './pages/WriterDashboard';
@@ -29,6 +32,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           
           <Route path="/" element={<MainLayout><Home /></MainLayout>} />
+          <Route path="/search" element={<MainLayout><Search /></MainLayout>} />
+          <Route path="/library" element={<MainLayout><Library /></MainLayout>} />
+          <Route path="/profile" element={<MainLayout><Profile /></MainLayout>} />
           <Route path="/story/:id" element={<MainLayout><StoryDetail /></MainLayout>} />
           <Route path="/story/:storyId/chapter/:chapterId" element={<Reader />} />
 

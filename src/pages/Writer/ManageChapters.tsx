@@ -311,63 +311,110 @@ export const ManageChapters: React.FC = () => {
       )}
 
       <div className="misa-card overflow-hidden">
-        <table className="w-full text-left">
-          <thead className="bg-[#FAFAFA] border-b">
-            <tr>
-              <th className="px-6 py-3 font-semibold text-[13px] text-text-secondary">STT</th>
-              <th className="px-6 py-3 font-semibold text-[13px] text-text-secondary">Tiêu đề chương</th>
-              <th className="px-6 py-3 font-semibold text-[13px] text-text-secondary">Gắn Link</th>
-              <th className="px-6 py-3 font-semibold text-[13px] text-text-secondary text-right">Thao tác</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y">
-            {chapters.length === 0 ? (
+        <div className="hidden md:block overflow-x-auto">
+          <table className="w-full text-left">
+            <thead className="bg-[#FAFAFA] border-b">
               <tr>
-                <td colSpan={4} className="px-6 py-20 text-center text-text-hint">
-                  <Layers size={48} className="mx-auto mb-4 opacity-20" />
-                  Chưa có chương nào. Hãy sử dụng bộ chia chương tự động.
-                </td>
+                <th className="px-6 py-3 font-semibold text-[13px] text-text-secondary">STT</th>
+                <th className="px-6 py-3 font-semibold text-[13px] text-text-secondary">Tiêu đề chương</th>
+                <th className="px-6 py-3 font-semibold text-[13px] text-text-secondary">Gắn Link</th>
+                <th className="px-6 py-3 font-semibold text-[13px] text-text-secondary text-right">Thao tác</th>
               </tr>
-            ) : (
-              chapters.map((chapter) => (
-                <tr key={chapter.id} className="hover:bg-brand-light/30 group">
-                  <td className="px-6 py-4 font-mono text-brand font-bold">{chapter.chapter_number}</td>
-                  <td className="px-6 py-4">
-                    <p className="font-medium">{chapter.title}</p>
-                    <p className="text-[11px] text-text-hint">{chapter.content.length.toLocaleString()} ký tự</p>
-                  </td>
-                  <td className="px-6 py-4">
-                    {chapter.link_url ? (
-                      <span className="text-[11px] bg-success/10 text-success px-2 py-1 rounded-full flex items-center w-fit gap-1">
-                        <LinkIcon size={10} /> Đã gắn
-                      </span>
-                    ) : (
-                      <span className="text-[11px] bg-gray-100 text-gray-400 px-2 py-1 rounded-full flex items-center w-fit gap-1">
-                        Trống
-                      </span>
-                    )}
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center justify-end gap-2">
-                      <button 
-                        onClick={() => openEdit(chapter)}
-                        className="p-2 hover:bg-white border border-transparent hover:border-border-neutral rounded-misa text-text-secondary"
-                      >
-                        Sửa
-                      </button>
-                      <button 
-                        onClick={() => handleDeleteChapter(chapter.id)}
-                        className="p-2 hover:bg-danger/10 text-danger rounded-misa"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
+            </thead>
+            <tbody className="divide-y">
+              {chapters.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className="px-6 py-20 text-center text-text-hint">
+                    <Layers size={48} className="mx-auto mb-4 opacity-20" />
+                    Chưa có chương nào. Hãy sử dụng bộ chia chương tự động.
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                chapters.map((chapter) => (
+                  <tr key={chapter.id} className="hover:bg-brand-light/30 group">
+                    <td className="px-6 py-4 font-mono text-brand font-bold">{chapter.chapter_number}</td>
+                    <td className="px-6 py-4">
+                      <p className="font-medium">{chapter.title}</p>
+                      <p className="text-[11px] text-text-hint">{chapter.content.length.toLocaleString()} ký tự</p>
+                    </td>
+                    <td className="px-6 py-4">
+                      {chapter.link_url ? (
+                        <span className="text-[11px] bg-success/10 text-success px-2 py-1 rounded-full flex items-center w-fit gap-1">
+                          <LinkIcon size={10} /> Đã gắn
+                        </span>
+                      ) : (
+                        <span className="text-[11px] bg-gray-100 text-gray-400 px-2 py-1 rounded-full flex items-center w-fit gap-1">
+                          Trống
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center justify-end gap-2">
+                        <button 
+                          onClick={() => openEdit(chapter)}
+                          className="p-2 hover:bg-white border border-transparent hover:border-border-neutral rounded-misa text-text-secondary"
+                        >
+                          Sửa
+                        </button>
+                        <button 
+                          onClick={() => handleDeleteChapter(chapter.id)}
+                          className="p-2 hover:bg-danger/10 text-danger rounded-misa"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Mobile View */}
+        <div className="md:hidden divide-y">
+           {chapters.length === 0 ? (
+             <div className="px-6 py-20 text-center text-text-hint">
+               <Layers size={48} className="mx-auto mb-4 opacity-20" />
+               Chưa có chương nào.
+             </div>
+           ) : (
+             chapters.map((chapter) => (
+               <div key={chapter.id} className="p-4 flex items-center justify-between gap-4">
+                 <div className="flex items-center gap-4">
+                    <div className="w-8 h-8 rounded-full bg-brand-light text-brand font-bold flex items-center justify-center text-[13px]">
+                       {chapter.chapter_number}
+                    </div>
+                    <div>
+                       <p className="font-medium text-[14px] line-clamp-1">{chapter.title}</p>
+                       <div className="flex items-center gap-2 mt-0.5">
+                          <span className="text-[10px] text-text-hint">{chapter.content.length.toLocaleString()} ký tự</span>
+                          {chapter.link_url && (
+                             <span className="text-[10px] text-success flex items-center gap-0.5">
+                                <LinkIcon size={10} /> Link
+                             </span>
+                          )}
+                       </div>
+                    </div>
+                 </div>
+                 <div className="flex items-center gap-1">
+                    <button 
+                      onClick={() => openEdit(chapter)}
+                      className="p-2 text-text-secondary"
+                    >
+                      Sửa
+                    </button>
+                    <button 
+                      onClick={() => handleDeleteChapter(chapter.id)}
+                      className="p-2 text-danger"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                 </div>
+               </div>
+             ))
+           )}
+        </div>
       </div>
     </div>
   );

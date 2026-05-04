@@ -144,7 +144,7 @@ export const WriterDashboard: React.FC = () => {
                    <button onClick={fetchStories} className="p-2 hover:bg-brand-light rounded-misa text-text-secondary border border-border-neutral"><RefreshCw size={16} /></button>
                 </div>
              </div>
-             <div className="overflow-x-auto">
+             <div className="hidden md:block overflow-x-auto">
                 <table className="w-full text-left">
                    <thead className="bg-[#FAFAFA] border-b border-border-neutral-light">
                       <tr>
@@ -203,6 +203,50 @@ export const WriterDashboard: React.FC = () => {
                       ))}
                    </tbody>
                 </table>
+             </div>
+
+             {/* Mobile View: Card List */}
+             <div className="md:hidden divide-y divide-border-neutral-light">
+                {loading ? (
+                   <div className="p-8 text-center text-text-hint">Đang tải dữ liệu...</div>
+                ) : filteredStories.length === 0 ? (
+                   <div className="p-8 text-center text-text-hint">Chưa có tác phẩm nào.</div>
+                ) : filteredStories.map((story) => (
+                   <div key={story.id} className="p-4 space-y-3">
+                      <div className="flex justify-between items-start">
+                         <div>
+                            <p onClick={() => navigate(`/story/${story.id}`)} className="font-bold text-[15px]">{story.title}</p>
+                            <p className="text-[12px] text-text-hint">{story.category} • {story.views?.toLocaleString()} lượt xem</p>
+                         </div>
+                         <span className={cn(
+                            "px-2 py-0.5 rounded text-[10px] font-bold",
+                            story.status === 'ongoing' ? "bg-info/10 text-info" : "bg-success/10 text-success"
+                         )}>
+                            {story.status === 'ongoing' ? 'Đang ra' : 'Hoàn thành'}
+                         </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                         <Link 
+                           to={`/writer/manage-chapters/${story.id}`}
+                           className="flex-1 misa-btn-secondary h-9 text-[12px] font-bold"
+                         >
+                           <Layers size={14} /> Quản lý chương
+                         </Link>
+                         <Link 
+                           to={`/writer/edit-story/${story.id}`}
+                           className="w-10 h-9 flex items-center justify-center border border-border-neutral rounded-misa text-text-secondary"
+                         >
+                           <PenTool size={14} />
+                         </Link>
+                         <button 
+                           onClick={() => handleDelete(story.id)}
+                           className="w-10 h-9 flex items-center justify-center border border-danger/20 bg-danger/5 text-danger rounded-misa"
+                         >
+                           <Trash2 size={14} />
+                         </button>
+                      </div>
+                   </div>
+                ))}
              </div>
           </div>
       </div>

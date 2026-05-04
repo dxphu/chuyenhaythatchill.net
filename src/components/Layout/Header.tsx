@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Bell, Settings, HelpCircle, Grid, MoreHorizontal, User, PenTool, LogOut } from 'lucide-react';
+import { Search, Bell, Settings, HelpCircle, Grid, MoreHorizontal, User, PenTool, LogOut, BookOpen } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 
@@ -7,14 +7,13 @@ export const Header: React.FC = () => {
   const { profile, signOut } = useAuth();
 
   return (
-    <header className="fixed top-0 left-0 right-0 h-[48px] bg-white border-b border-border-neutral-light flex items-center justify-between px-4 z-50">
+    <header className="fixed top-0 left-0 right-0 h-[56px] md:h-[48px] bg-white border-b border-border-neutral-light flex items-center justify-between px-4 z-50">
       <div className="flex items-center gap-3">
-        <button className="p-1 hover:bg-brand-light rounded transition-colors bg-brand text-white">
-          <Grid size={18} />
-        </button>
         <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-brand rounded-full flex items-center justify-center text-white font-bold">C</div>
-          <span className="font-semibold text-[16px] text-text-primary hidden sm:block">Chill Mỗi Ngày</span>
+          <div className="w-8 h-8 bg-brand rounded-misa flex items-center justify-center text-white font-bold">
+            <BookOpen size={18} />
+          </div>
+          <span className="font-bold text-[17px] tracking-tight text-text-primary">TruyenMISA</span>
         </Link>
       </div>
 
@@ -30,9 +29,9 @@ export const Header: React.FC = () => {
       </div>
 
       <div className="flex items-center gap-2">
-        <button className="p-2 text-text-secondary hover:text-brand transition-colors rounded-misa md:hidden">
-          <Search size={20} />
-        </button>
+        <Link to="/search" className="p-2 text-text-secondary hover:text-brand transition-colors rounded-misa md:hidden">
+          <Search size={22} />
+        </Link>
         <button className="p-2 text-text-secondary hover:text-brand transition-colors rounded-misa hidden sm:block">
           <Bell size={20} />
         </button>

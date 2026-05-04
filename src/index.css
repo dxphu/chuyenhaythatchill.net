@@ -26,15 +26,35 @@
 
 @layer base {
   body {
-    @apply font-sans text-text-primary bg-background-app text-[13px];
+    @apply font-sans text-text-primary bg-background-app text-[14px] antialiased selection:bg-brand/20;
+    /* Ngăn trình duyệt mobile tự dãn padding khi focus input (zoom) */
+    -webkit-text-size-adjust: 100%;
   }
   
   h2 {
-    @apply text-[20px] font-semibold;
+    @apply text-[18px] md:text-[20px] font-bold tracking-tight;
   }
   
   h3 {
-    @apply text-[16px] font-semibold;
+    @apply text-[15px] md:text-[16px] font-bold;
+  }
+
+  input, textarea, select {
+    @apply text-[16px] md:text-[14px]; /* Ngăn iOS zoom khi focus (phải >= 16px trên mobile) */
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
   }
 }
 

@@ -83,9 +83,11 @@ export const Home: React.FC = () => {
             <p className="text-white/80 line-clamp-2">
               {featuredStories[0]?.description}
             </p>
-            <Link to={`/story/${featuredStories[0]?.id}`} className="misa-btn-primary w-fit h-10 px-6 mt-4">
-              Đọc tiếp <ChevronRight size={18} />
-            </Link>
+            {featuredStories.length > 0 && (
+              <Link to={`/story/${featuredStories[0].id}`} className="misa-btn-primary w-fit h-10 px-6 mt-4">
+                Đọc tiếp <ChevronRight size={18} />
+              </Link>
+            )}
           </div>
           
           <div className="hidden lg:block absolute right-20 top-1/2 -translate-y-1/2 w-64 h-96 shadow-2xl rounded-misa overflow-hidden rotate-6 hover:rotate-0 transition-all duration-500">
@@ -110,7 +112,7 @@ export const Home: React.FC = () => {
             <Star className="text-brand fill-brand" size={24} />
             Truyện mới cập nhật
           </h2>
-          <Link to="/all" className="text-link hover:underline font-medium flex items-center gap-1">
+          <Link to="/search" className="text-link hover:underline font-medium flex items-center gap-1">
             Xem tất cả <ChevronRight size={16} />
           </Link>
         </div>

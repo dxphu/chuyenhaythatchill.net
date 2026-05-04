@@ -29,7 +29,7 @@ export const Sidebar: React.FC = () => {
   return (
     <aside 
       className={cn(
-        "fixed left-0 top-[48px] bottom-0 bg-white border-r border-border-neutral-light transition-all duration-300 z-40 flex flex-col",
+        "fixed left-0 top-[48px] bottom-0 bg-white border-r border-border-neutral-light transition-all duration-300 z-40 hidden md:flex flex-col",
         collapsed ? "w-[64px]" : "w-[240px]"
       )}
     >
